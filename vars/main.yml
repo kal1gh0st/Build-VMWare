@@ -1,0 +1,8 @@
+vmware:
+  workstation_key: "VALID LICENSE KEY HERE"
+  workstation_url: "https://<your file server here>/VMware-Workstation-Full-10.0.6-2700073.x86_64.bundle"
+  workstation_download_path: "/tmp/workstation.bundle"
+  vix_url: "https://<your file server here>/VMware-VIX-1.14.2-2780323.x86_64.bundle"
+  vix_download_path: "/tmp/vix.bundle"
+  ovftool_url: "https://<your file server here>/VMware-ovftool-4.1.0-2459827-lin.x86_64.bundle"
+  ovftool_download_path: "/tmp/ovftool.bundle"
