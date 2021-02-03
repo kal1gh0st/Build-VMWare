@@ -16,3 +16,33 @@ Finally, if you want to distribute a virtual appliance that can be loaded on any
 
 Automation
 If you’re like me you want to automate the provisioning of build servers. Here is the Ansible role I use to install VMware on Ubuntu 14.04 ready for appliance builds. Even if you’re not interested in Ansible you can follow the steps manually in your shell:
+
+Building OVAs
+By default Packer will produce a VMX based virtual machine (via the vmware-vmx builder). If you want to package this in to a single file for easy distribution, or you want to make sure it can be used on vSphere, then you need to convert it to an OVA.
+
+There is a community provided post-processor for Packer here that you can then invoke from your packer.json file. I opted not to use this, as I didn’t a) want to install golang on my build servers just to compile/install this or b) didn’t want to manage my own pre-compiled binaries for it. Instead I chose to use a shell script to call OVF Tool after Packer has finished.
+
+Here’s an example of that script - I’ve left some of the skeleton of our main build-vm.sh script in place, so that you can see how we drive Packer and convert the VMX to an OVA if appropriate.
+
+Troubleshooting
+The virtual machine has exited.
+At some point you’ll probably see this horrifically unhelpful error message in the Packer logs:
+
+The virtual machine has exited.
+This comes from VMware, and it can mean a wide variety of things. These are some of the things to check before falling back to the last resort:
+
+Did you license VMware Workstation with a valid license key?
+
+Does the host machine you’re building on have enough memory to support the VM you’re trying to start?
+
+Does the host machine you’re building on have enough CPU to support the VM you’re trying to start?
+
+Does the machine you’re building on have VT-X enabled? e.g. If you’re building inside a nested virtual machine you will need to enable nested virtualization. Don’t even bother to try on public clouds like AWS or GCE etc. as they don’t enable this.
+
+Can’t think of anything you’ve done wrong? Then sadly the last resort is to install a desktop environment and attempt to manually start the VM through the VMware Workstation UI - you’ll get the real error message in a pop up dialog.
+
+Failed to build vmnet. Failed to execute the build command.
+This one only recently started happening to me with the release of kernel 3.19. I initially received the generic error message above and after falling back to installing a desktop environment and starting the Workstation UI was prompted to recompile VMware kernel modules for the new kernel. After clicking OK and waiting a while the process failed with this message:
+
+Failed to build vmnet. Failed to execute the build command.
+Some Googling lead me to this helpful thread. I followed the instructions in this answer (after making sure I was happy with the content of the patch) and that brought VMware back to life.
