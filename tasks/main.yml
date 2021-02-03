@@ -1,0 +1,33 @@
+---
+- name: Install Packages
+  apt: pkg={{item}} state=installed
+  with_items:
+    - git
+    - qemu-utils
+    - build-essential
+    - libxtst6
+    - libxss1
+    - libxcursor1
+    - libxinerama1
+    - libxi6
+
+- name: Download VMware Workstation
+  get_url: url={{ vmware.workstation_url }} dest={{ vmware.workstation_download_path }} mode=755
+
+- name: Download VMware VIX
+  get_url: url={{ vmware.vix_url }} dest={{ vmware.vix_download_path }} mode=755
+
+- name: Download VMware OVFTool
+  get_url: url={{ vmware.ovftool_url }} dest={{ vmware.ovftool_download_path }} mode=755
+
+- name: Install VMware Workstation
+  shell: "{{ vmware.workstation_download_path }} --eulas-agreed --required"
+
+- name: Licence VMware Workstation
+  shell: /usr/lib/vmware/bin/vmware-vmx --new-sn {{ vmware.workstation_key }}
+
+- name: Install VMware VIX
+  shell: "{{ vmware.vix_download_path }} --eulas-agreed --required"
+
+- name: Install VMware OVFTool
+  shell: "{{ vmware.ovftool_download_path }} --eulas-agreed --required"
