@@ -1,5 +1,7 @@
 # Build-VMWare
 Build VMware Appliances with Packer on Linux
+![immagine](https://user-images.githubusercontent.com/56889513/117019679-eb534500-acf5-11eb-9f38-9e3e75377bdc.png)
+
 ![immagine](https://user-images.githubusercontent.com/56889513/117019561-cced4980-acf5-11eb-89e0-83f74b223830.png)
 
 Recently I set up automated VMware virtual appliance builds using Packer and Ansible. I had manually tested and pieced together the various steps on OS X, and thought everything would Just Work™ when I transferred it over to Linux to run on our automated build infrastructure. I was wrong…
